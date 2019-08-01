@@ -5,7 +5,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-            C45
+            Users
             <small>advanced tables</small>
             </h1>
             <ol class="breadcrumb">
@@ -17,17 +17,14 @@
         <!-- Main content -->
         <section class="content">
             <div class="row">
-            <!-- <div class="col-xs-12">
-                <a href="{{url('/c45/add')}}" class="btn btn-primary"><span class="fa fa-plus"></span></a>    
-            </div> -->
             <div class="col-xs-12">
                 <div class="box">
                 <div class="box-header">
-                    <div class="col-xs-10"><h3 class="box-title">C45 Data</h3></div>
+                    <div class="col-xs-10"><h3 class="box-title">Users Data</h3></div>
                     
                     <div class="col-xs-2">
                         <div class="float-right">
-                        <a href="{{url('/c45/add')}}" class="btn btn-primary pull-right"><span class="fa fa-plus"></span></a>    
+                        <a href="{{url('/users/add')}}" class="btn btn-primary pull-right"><span class="fa fa-plus"></span></a>    
                         </div>
                     </div>
                 </div>
@@ -37,16 +34,8 @@
                     <thead>
                     <tr>
                         <th>No</th>
-                        <th>PEG#</th>
                         <th>Name</th>
-                        <th>Code#</th>
-                        <th>Code</th>
-                        <th>Gender</th>
-                        <th>PERSG</th>
-                        <th>PERSK</th>
-                        <th>CTR#</th>
-                        <th>CTR</th>
-                        <th>Year</th>
+                        <th>Username</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -56,19 +45,11 @@
                             @foreach($data as $value)
                                 <tr>
                                     <td>{{$i}}</td>
-                                    <td>{{$value['no_peg']}}</td>
                                     <td>{{$value['name']}}</td>
-                                    <td>{{$value['code']}}</td>
-                                    <td>{{$value['code_text']}}</td>
-                                    <td>{{$value['gender']}}</td>
-                                    <td>{{$value['persg']}}</td>
-                                    <td>{{$value['persk']}}</td>
-                                    <td>{{$value['ctr']}}</td>
-                                    <td>{{$value['ctr_text']}}</td>
-                                    <td>{{$value['year']}}</td>
+                                    <td>{{$value['username']}}</td>
                                     <td>
-                                        <a href="{{url('c45/edit/').'/'.$value['id']}}"><span class="fa fa-pencil"></span></a>
-                                        <a href="{{url('c45/delete/').'/'.$value['id']}}" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash"></span></a>
+                                        <a href="{{url('users/edit/').'/'.$value['id']}}"><span class="fa fa-pencil"></span></a>
+                                        <a href="{{url('users/delete/').'/'.$value['id']}}" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash"></span></a>
                                     </td>
                                 </tr>
                                 <?php $i++;?>
