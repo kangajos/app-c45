@@ -39,27 +39,29 @@ class CalculateC45Controller extends Controller
 
       $truncate = CalculateC45::truncate();
 
-      $c45 = C45::selectRaw('SUM(epr1) as sum_epr1,SUM(epr2) as sum_epr2,SUM(epr3) as sum_epr3,SUM(epr4) as sum_epr4, no_peg');
+      $c45 = C45::selectRaw('SUM(epr1) as sum_epr1,SUM(epr2) as sum_epr2,SUM(epr3) as sum_epr3,SUM(epr4) as sum_epr4, no_peg, COUNT(year) as cnt_year');
       $c45 = $c45->groupBy('no_peg')->get();
 
       if(!$c45->isEmpty()){
         foreach ($c45 as $value) {
-          $sum1 = round($value->sum_epr1/4,2);
+          $paramStatus = [];
+
+          $sum1 = round($value->sum_epr1/$value->cnt_year,2);
           $status1 = $this->getStat($sum1);
           $paramStatus[] = $status1;
 
-          $sum2 = round($value->sum_epr2/4,2);
+          $sum2 = round($value->sum_epr2/$value->cnt_year,2);
           $status2 = $this->getStat($sum2);
           $paramStatus[] = $status2;
 
-          $sum3 = round($value->sum_epr3/4,2);
+          $sum3 = round($value->sum_epr3/$value->cnt_year,2);
           $status3 = $this->getStat($sum3);
           $paramStatus[] = $status3;
 
-          $sum4 = round($value->sum_epr4/4,2);
+          $sum4 = round($value->sum_epr4/$value->cnt_year,2);
           $status4 = $this->getStat($sum4);
           $paramStatus[] = $status4;
-
+          
           $result = $this->getResult($paramStatus);
 
           $save = new CalculateC45;
@@ -114,11 +116,15 @@ class CalculateC45Controller extends Controller
   public function getResult($param=[])
   {
     $result = 1;
-    $counts = array_count_values($param);
-    if($counts['1'] > 0){
-      $result=2;
-    }elseif($counts['2'] >= 2){
-      $result = 1;
+    if(!empty($param)){
+      $counts = array_count_values($param);
+      if(!empty($counts)){
+        if(isset($counts['1'])?$counts['1']:0 > 0){
+          $result=2;
+        }elseif(isset($counts['2'])?$counts['2']:0 >= 2){
+          $result = 1;
+        }
+      }
     }
 
     return $result;
