@@ -134,11 +134,19 @@ class CalculateC45Controller extends Controller
   public function result()
   {
 
-    $gender = CalculateC45::selectRaw("gender,COUNT(gender) as cnt_gend,
-    SUM(if(result = '1', 1, 0)) AS cnt_rekom,
-    SUM(if(result = '2', 1, 0)) AS cnt_usul");
-    $gender = $gender->join('c45','c45.no_peg','=','calculate_c45.no_peg');
-    $gender = $gender->groupBy('gender')->get();
+    // $gender = CalculateC45::selectRaw("genders,COUNT(gender) as cnt_gend,
+    // SUM(if(result = '1', 1, 0)) AS cnt_rekom,
+    // SUM(if(result = '2', 1, 0)) AS cnt_usul");
+    // $gender = $gender->join('c45','c45.no_peg','=','calculate_c45.no_peg');
+    // $gender = $gender->groupBy('gender')->get();
+
+    $gender = DB::select("select 
+    c.gender,
+      COUNT(c.gender) as cnt_gend, 
+      SUM(if(result = '1', 1, 0)) AS cnt_rekom, 
+      SUM(if(result = '2', 1, 0)) AS cnt_usul 
+  from `calculate_c45` a
+  JOIN (SELECT b.no_peg, b.gender FROM c45 b group by b.no_peg) c ON c.no_peg = a.no_peg group by c.gender");
 
     $epr1 = CalculateC45::selectRaw("status1,
     COUNT(status1) as cnt_res,
@@ -289,7 +297,7 @@ class CalculateC45Controller extends Controller
       )
     );
 
-    if(!$gender->isEmpty()){
+    if(!empty($gender)){
       foreach ($gender as $value) {
         $total += $value->cnt_gend;
         $total_rekom += $value->cnt_rekom;
