@@ -35,4 +35,7 @@ Route::group(['middleware'  =>  'auth'], function(){
     Route::get('/calculate', 'CalculateC45Controller@index');
     Route::get('/calculate/generate', 'CalculateC45Controller@generate');
 
+    Route::get('/result', 'CalculateC45Controller@result');
+
+
 });
